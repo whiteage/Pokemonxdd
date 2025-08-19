@@ -36,9 +36,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.example.pokemonxdd.presentation.entity.GenderRate
 import com.example.pokemonxdd.presentation.viewmodel.MainVM
 import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 import javax.annotation.meta.When
@@ -83,7 +86,7 @@ fun FilterScreen(viewModel: MainVM, navHostController: NavHostController) {
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     FilterToggleButton(
-                        text = "Gender",
+                        text = "Gender rate",
                         isSelected = genderButton,
                         onClick = { viewModel.toggleGender() }
                     )
@@ -102,7 +105,7 @@ fun FilterScreen(viewModel: MainVM, navHostController: NavHostController) {
                 Spacer(modifier = Modifier.size(12.dp))
 
                 LazyVerticalGrid(
-                    columns = GridCells.Fixed(3),
+                    columns = GridCells.Fixed(2),
                     contentPadding = PaddingValues(8.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -126,7 +129,13 @@ fun FilterScreen(viewModel: MainVM, navHostController: NavHostController) {
                             shape = RoundedCornerShape(12.dp),
                             modifier = Modifier.fillMaxWidth()
                         ) {
-                            Text(item)
+                            val genderText = runCatching { GenderRate.fromValue(item.toInt()).displayName }
+                                .getOrElse { item }
+                            Text(if (genderButton) genderText else item,
+                                fontSize = 14.sp,
+                                maxLines = 1,
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier.fillMaxWidth())
                         }
                     }
                 }
@@ -147,17 +156,5 @@ fun FilterScreen(viewModel: MainVM, navHostController: NavHostController) {
     )
 }
 
-@Composable
-fun FilterToggleButton(text: String, isSelected: Boolean, onClick: () -> Unit) {
-    Button(
-        onClick = onClick,
-        colors = ButtonDefaults.buttonColors(
-            containerColor = if (isSelected) Color(0xFF4CAF50) else Color(0xFF2A2A2A),
-            contentColor = Color.White
-        ),
-        shape = RoundedCornerShape(12.dp)
-    ) {
-        Text(text)
-    }
-}
+
 

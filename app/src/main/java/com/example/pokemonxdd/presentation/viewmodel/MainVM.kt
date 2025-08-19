@@ -95,28 +95,28 @@ class MainVM @Inject constructor(
     }
 
     fun toggleGender() {
-        genderButton.value = !genderButton.value
-        if (_genderButton.value) {
+        if (!_genderButton.value) {
             colorButton.value = false
             typeButton.value = false
+            genderButton.value = !genderButton.value
             getItemsForFilters("Genders")
         }
     }
 
     fun toggleColor() {
-        colorButton.value = !colorButton.value
-        if (_colorButton.value) {
+        if (!_colorButton.value) {
             genderButton.value = false
             typeButton.value = false
+            colorButton.value = !colorButton.value
             getItemsForFilters("Colors")
         }
     }
 
     fun toggleType() {
-        typeButton.value = !typeButton.value
-        if (_typeButton.value) {
+        if (!_typeButton.value) {
             genderButton.value = false
             colorButton.value = false
+            typeButton.value = !typeButton.value
             getItemsForFilters("Types")
         }
     }
